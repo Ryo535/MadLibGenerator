@@ -15,7 +15,7 @@ def is_in_range(num: int, start: int, end: int):
     else:
         return False # returns false if the integer is not within the range
 
-# asking questions to gather user input, making the story unique.
+# asking questions to gather user input, making the story unique to each user.
 color = enterbox("What is your favourite colour?")
 
 adjectives = []
@@ -34,8 +34,7 @@ while not randomNum:
     if not is_in_range(randomNum, 1, 100): randomNum = False
     if not randomNum: msgbox("Please enter a valid number!")
 
-# adjusted story to make use of the new variables (the story is still just a 
-# placeholder being used for testing)
+# placeholder story used for testing
 msgbox(f"The {adjectives[0]} {color} {animal} was {verb} in a very {adjectives[1]} manner.")
 
 # shows a different story depending on the user's chosen number
