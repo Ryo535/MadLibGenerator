@@ -11,7 +11,7 @@ def str_to_int(text: str) -> int | bool:
 
 # function to check if an integer is within a variable range
 def is_in_range(num, start: int, end: int) -> bool:
-    if type(num) == []: 
+    if type(num) == type([]): 
         for i in num: 
             if not (i >= start and i <= end):
                 return False # returns false if ANY of the integers are not within range
@@ -31,9 +31,9 @@ def ask_question(question: str, min_chars = 3, max_chars = 30, multiple = False,
     while not valid:
         result = check_cancel(enterbox(question))
         if multiple:
-            results = result.split()
-            valid = len(results) == list_length
-            if valid: valid = is_in_range([len(word) for word in results], min_chars, max_chars)
+            result = result.split()
+            valid = len(result) == list_length
+            if valid: valid = is_in_range([len(word) for word in result], min_chars, max_chars)
             else: 
                 check_cancel(msgbox(f"Please enter {list_length} words! Remember to seperate them with a space!"))
                 continue
@@ -51,11 +51,11 @@ verb = ask_question("What is your favourite activity?")
 animal = ask_question("What is your favourite animal?", 3, 42)
 
 rand_num = ""
-# loop that ensures the script only continues if the input is a valid integer, preventing errors from occuring.
+# loop that ensures the script only continues if the input is a valid integer within the range, preventing errors from occuring.
 while not rand_num:
-    rand_num = str_to_int(enterbox("Pick a number from 1-100"))
+    rand_num = str_to_int(check_cancel(enterbox("Pick a number from 1-100")))
     if not is_in_range(rand_num, 1, 100): rand_num = False
-    if not rand_num: msgbox("Please enter a valid number!")
+    if not rand_num: msgbox("Please enter a valid number! It must be between 1-100!")
 
 # placeholder story used for testing
 msgbox(f"The {adjectives[0]} {color} {animal} was {verb} in a very {adjectives[1]} manner.")
