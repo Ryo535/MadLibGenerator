@@ -4,62 +4,51 @@ import sys
 # sys library is used to exit the application when user clicks cancel
 
 # function to check if a string is an integer
-def str_to_int(text: str):
+def str_to_int(text: str) -> int | bool:
     if text.isdigit():
         return int(text)
     return False
 
 # function to check if an integer is within a variable range
-def is_in_range(num, start: int, end: int, loop = False):
-    if loop: 
+def is_in_range(num, start: int, end: int) -> bool:
+    if type(num) == []: 
         for i in num: 
             if not (i >= start and i <= end):
                 return False # returns false if ANY of the integers are not within range
         return True
-    
     if num >= start and num <= end:
         return True
     return False
 
 # function to check if user clicked cancel
-def check_cancel(button):
+def check_cancel(button: str) -> str:
     if button == None:
         sys.exit(0) # closes the program
     return button
 
+def ask_question(question: str, min_chars = 3, max_chars = 30, multiple = False, list_length = 0) -> str:
+    valid = False
+    while not valid:
+        result = check_cancel(enterbox(question))
+        if multiple:
+            results = result.split()
+            valid = len(results) == list_length
+            if valid: valid = is_in_range([len(word) for word in results], min_chars, max_chars)
+            else: 
+                check_cancel(msgbox(f"Please enter {list_length} words! Remember to seperate them with a space!"))
+                continue
+        else: valid = is_in_range(len(result), min_chars, max_chars)
+        if not valid: msgbox(f"Please enter a valid answer! Your answer must be between {min_chars}-{max_chars} characters!")
+    return result
+
 # asking questions to gather user input, making the story unique to each user.
-question = "What is your favourite colour?"
-valid = False
-while not valid:
-    color = check_cancel(enterbox(question))
-    valid = is_in_range(len(color), 3, 30)
-    if not valid: msgbox("Please enter a valid colour! It must be between 3-30 characters.")
+color = ask_question("What is your favourite colour?")
 
-question = "What are two words you would use to describe your best friend? Seperate them with a space."
-adjectives = []
-valid = False
-# loop that ensures the script only continues if there are exactly two valid adjectives, preventing errors from occuring.
-while len(adjectives) != 2 or not valid:
-    adjectives = check_cancel(enterbox(question)).split()
+adjectives = ask_question("What are two words you would use to describe your best friend? Seperate them with a space.", 3, 27, True, 2)
 
-    valid = is_in_range([len(word) for word in adjectives], 3, 27, True)
-    
-    if len(adjectives) != 2: msgbox("Please enter two adjectives! Remember to seperate them with a space!")
-    elif not valid: msgbox("Please enter valid english adjectives! They each must be between 3-45 characters!")
+verb = ask_question("What is your favourite activity?")
 
-question = "What is your favourite activity?"
-valid = False
-while not valid:
-    verb = check_cancel(enterbox(question))
-    valid = is_in_range(len(verb), 3, 30)
-    if not valid: msgbox("Please enter a valid verb! It must be between 3-30 characters.")
-
-question = "What is your favourite animal?"
-valid = False
-while not valid:
-    animal = check_cancel(enterbox(question))
-    valid = is_in_range(len(verb), 3, 42)
-    if not valid: msgbox("Please enter a valid animal! It must be between 3-42 characters.")
+animal = ask_question("What is your favourite animal?", 3, 42)
 
 rand_num = ""
 # loop that ensures the script only continues if the input is a valid integer, preventing errors from occuring.
